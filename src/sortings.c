@@ -66,8 +66,9 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
     free(new_array);
 }
 
-void quick(strings_array_t strings_array, int left = 0, int right = (int) array_size - 1, comparator_func_t comparator) {
-    int i = left, j = right;
+void quick(strings_array_t strings_array, int left, int right = (int) array_size - 1, comparator_func_t comparator) {
+    int i = left = 0;
+    int j = right;
     char *middle = strings_array[(left + right) / 2];
 
     do {
