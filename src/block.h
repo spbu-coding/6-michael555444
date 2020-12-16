@@ -4,7 +4,7 @@
 #include "checkup.h"
 #include "sortings.h"
 
-static char *EOF = "\n";
+static char* END_OF_FILE = "\n";
 
 typedef int sort_num_t, comparator_num_t;
 

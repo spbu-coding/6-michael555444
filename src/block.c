@@ -14,7 +14,7 @@ void output_block(fname_t file_name, array_size_t array_size, strings_array_t st
         fputs(strings_array[i], output_file);
     }
     if (array_size == 0) {
-        fputs(EOF, output_file);
+        fputs(END_OF_FILE, output_file);
     }
     fclose(output_file);
 }

@@ -126,3 +126,33 @@ void radix(strings_array_t array, array_size_t size, comparator_func_t compare_f
         memcpy(length, buffer_length, size * sizeof(size_t));
     }
 }
+
+int ascending(const char *first_string, const char *second_string)
+{
+    char first_string_char, second_string_char;
+    do
+    {
+        first_string_char = *first_string++;
+        second_string_char = *second_string++;
+        if(first_string_char == END_OF_STRING)
+        {
+            return (first_string_char - second_string_char) > 0;
+        }
+    } while(first_string_char == second_string_char);
+    return (first_string_char - second_string_char) > 0;
+}
+
+int descending(const char *first_string, const char *second_string)
+{
+    char first_string_char, second_string_char;
+    do
+    {
+        first_string_char = *first_string++;
+        second_string_char = *second_string++;
+        if(first_string_char == END_OF_STRING)
+        {
+            return (first_string_char - second_string_char) < 0;
+        }
+    } while(first_string_char == second_string_char);
+    return (first_string_char - second_string_char) < 0;
+}
