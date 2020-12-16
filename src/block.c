@@ -45,10 +45,10 @@ void sort_block(strings_array_t strings_array, array_size_t array_size, comparat
                 sort_num_t sort_num) {
     switch (comparator_num) {
         case 0:
-            sorts(strings_array, array_size, comparator_asc, sort_num);
+            sorts(strings_array, array_size, ascending, sort_num);
             break;
         case 1:
-            sorts(strings_array, array_size, comparator_des, sort_num);
+            sorts(strings_array, array_size, descending, sort_num);
             break;
         default:
             break;
