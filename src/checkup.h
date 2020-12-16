@@ -17,8 +17,8 @@ typedef char **parameters_t;
 static const int SUCCESS = 0;
 static const int UNSUCCESS = -1;
 static const int COUNT_OF_STRINGS = 1;
-static const int INPUT_FILE_NAME = 2;
-static const int OUTPUT_FILE_NAME = 3;
+static const int INPUT_FNAME = 2;
+static const int OUTPUT_FNAME = 3;
 static const int SORT_NAME = 4;
 static const int COMPARATOR_NAME = 5;
 static const int PARAMS_COUNT = 5;
@@ -29,4 +29,4 @@ static const char *COMPARERS[] = {"asc", "des"};
 
 int is_string_in_array(string_t, const_string_array_t, array_size_t);
 
-int check_parameters(parameters_count_t, parameters_t);
+int checks(parameters_count_t parameters_count, parameters_t parameters);

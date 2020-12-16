@@ -56,34 +56,34 @@ int is_string_in_array(string_t string, const_string_array_t string_array, array
             return i;
         }
     }
-    return UNSUCCESSFUL_EXIT_CODE;
+    return UNSUCCESS;
 }
 
-int check_parameters(parameters_count_t parameters_count, parameters_t parameters) {
+int checks(parameters_count_t parameters_count, parameters_t parameters) {
     if (!check_count_of_parameters(parameters_count)) {
         return error("Input correct count of parameters.");
     }
 
-    if (!is_integer(parameters[ARG_COUNT_OF_STRINGS])) {
+    if (!is_integer(parameters[COUNT_OF_STRINGS])) {
         return error("Input correct data type of strings count.");
     }
 
-    if (!check_existence_input_file(parameters[ARG_INPUT_FILE_NAME])) {
+    if (!check_existence_input_file(parameters[INPUT_FNAME])) {
         return error("Input correct input file name.");
     }
 
-    int count_of_strings = string_to_int(parameters[ARG_COUNT_OF_STRINGS]);
-    if (!check_count_of_strings(parameters[ARG_INPUT_FILE_NAME], count_of_strings)) {
+    int count_of_strings = string_to_int(parameters[COUNT_OF_STRINGS]);
+    if (!check_count_of_strings(parameters[INPUT_FNAME], count_of_strings)) {
         return error("Input correct count of strings.");
     }
 
-    if (is_string_in_array(parameters[ARG_SORT_NAME], SORT_NAMES, SORTS_COUNT) == UNSUCCESSFUL_EXIT_CODE) {
+    if (is_string_in_array(parameters[SORT_NAME], SORTINGS, SORTINGS_COUNT) == UNSUCCESS) {
         return error("Input correct sorting name.");
     }
 
-    if (is_string_in_array(parameters[ARG_COMPARATOR_NAME], COMP_NAMES, COMPS_COUNT) == UNSUCCESSFUL_EXIT_CODE) {
+    if (is_string_in_array(parameters[COMPARATOR_NAME], COMPARERS, COMPARERS_COUNT) == UNSUCCESS) {
         return error("Input correct comparator name.");
     }
 
-    return SUCCESSFUL_EXIT_CODE;
+    return SUCCESS;
 }
