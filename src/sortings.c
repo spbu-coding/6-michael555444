@@ -66,26 +66,32 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
     free(new_array);
 }
 
-void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator_func) {
-    int left = 0;
-    int right = array_size - 1;
-    char *mid, *temp;
-    mid = strings_array[array_size / 2];
+void quick(strings_array_t strings_array, int left = 0, int right = (int) array_size - 1, comparator_func_t comparator) {
+    int i = left, j = right;
+    char *middle = strings_array[(left + right) / 2];
+
     do {
-        while (comparator_func(strings_array[left], mid) < 0) left++;
-        while (comparator_func(strings_array[right], mid) > 0) right--;
-        if (left <= right) {
-            temp = strings_array[left];
-            strings_array[left] = strings_array[right];
-            strings_array[right] = temp;
-            left++;
-            right--;
+        while (comparator(middle, strings_array[i]) && (i < right)) {
+            i++;
         }
-    } while (left <= right);
-    if (right > 0)
-        quick(strings_array, right + 1, comparator_func);
-    if (left < (int) array_size)
-        quick(&strings_array[left], array_size - left, comparator_func);
+        while (comparator(strings_array[j], middle) && (j > left)) {
+            j--;
+        }
+        if (i <= j) {
+            char *swapper = strings_array[i];
+            strings_array[i] = strings_array[j];
+            strings_array[j] = swapper;
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (left < j) {
+        quick(strings_array, left, j, comparator);
+    }
+    if (i < right) {
+        quick(strings_array, i, right, comparator);
+    }
 }
 
 void radix(strings_array_t array, array_size_t size, comparator_func_t compare_func) {
@@ -127,32 +133,26 @@ void radix(strings_array_t array, array_size_t size, comparator_func_t compare_f
     }
 }
 
-int ascending(const char *first_string, const char *second_string)
-{
+int ascending(const char *first_string, const char *second_string) {
     char first_string_char, second_string_char;
-    do
-    {
+    do {
         first_string_char = *first_string++;
         second_string_char = *second_string++;
-        if(first_string_char == END_OF_STRING)
-        {
+        if (first_string_char == END_OF_STRING) {
             return (first_string_char - second_string_char) > 0;
         }
-    } while(first_string_char == second_string_char);
+    } while (first_string_char == second_string_char);
     return (first_string_char - second_string_char) > 0;
 }
 
-int descending(const char *first_string, const char *second_string)
-{
+int descending(const char *first_string, const char *second_string) {
     char first_string_char, second_string_char;
-    do
-    {
+    do {
         first_string_char = *first_string++;
         second_string_char = *second_string++;
-        if(first_string_char == END_OF_STRING)
-        {
+        if (first_string_char == END_OF_STRING) {
             return (first_string_char - second_string_char) < 0;
         }
-    } while(first_string_char == second_string_char);
+    } while (first_string_char == second_string_char);
     return (first_string_char - second_string_char) < 0;
 }
