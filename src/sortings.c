@@ -67,7 +67,7 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
 }
 
 void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator) {
-    void sorting(strings_array, 0, (int) array_size - 1, comparator) {
+    void sorting(strings_array, int 0, (int) array_size - 1, comparator) {
         int i = left = 0;
         int j = right = array_size_t - 1;
         char *middle = strings_array[(left + right) / 2];
