@@ -4,6 +4,8 @@
 #include "checkup.h"
 #include "sortings.h"
 
+static char *EOF = "\n";
+
 typedef int sort_num_t, comparator_num_t;
 
 void input_block(fname_t, array_size_t, strings_array_t);

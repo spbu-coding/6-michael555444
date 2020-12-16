@@ -1,7 +1,5 @@
 #include "block.h"
 
-static char *EOF = "\n";
-
 void input_block(fname_t file_name, array_size_t array_size, strings_array_t strings_array) {
     FILE *input_file = fopen(file_name, "r");
     for (array_size_t i = 0; i < array_size; i++) {
@@ -10,7 +8,7 @@ void input_block(fname_t file_name, array_size_t array_size, strings_array_t str
     fclose(input_file);
 }
 
-void output_block(file_name_t file_name, array_size_t array_size, strings_array_t strings_array) {
+void output_block(fname_t file_name, array_size_t array_size, strings_array_t strings_array) {
     FILE *output_file = fopen(file_name, "w");
     for (array_size_t i = 0; i < array_size; i++) {
         fputs(strings_array[i], output_file);
@@ -47,10 +45,10 @@ void sort_block(strings_array_t strings_array, array_size_t array_size, comparat
                 sort_num_t sort_num) {
     switch (comparator_num) {
         case 0:
-            choose_sort(strings_array, array_size, comparator_asc, sort_num);
+            sorts(strings_array, array_size, comparator_asc, sort_num);
             break;
         case 1:
-            choose_sort(strings_array, array_size, comparator_des, sort_num);
+            sorts(strings_array, array_size, comparator_des, sort_num);
             break;
         default:
             break;

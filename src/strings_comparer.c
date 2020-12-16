@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {
     input_array(argv[INPUT_FNAME], count_of_strings, strings_array);
     int comparator_num = is_string_in_array(argv[COMPARATOR_NAME], COMPARERS, COMPARERS_COUNT);
     int sort_num = is_string_in_array(argv[SORT_NAME], SORTINGS, SORTINGS_COUNT);
-    sort_array(strings_array, count_of_strings, comparator_num, sort_num);
-    output_array(argv[OUTPUT_FNAME], count_of_strings, strings_array);
+    sort_block(strings_array, count_of_strings, comparator_num, sort_num);
+    output_block(argv[OUTPUT_FNAME], count_of_strings, strings_array);
     for (int i = 0; i < count_of_strings; i++) {
         free(strings_array[i]);
     }

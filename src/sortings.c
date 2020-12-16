@@ -15,15 +15,15 @@ void bubble(strings_array_t strings_array, array_size_t array_size, comparator_f
 }
 
 void insertion(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator) {
-    int location;
+    int place;
     for (int i = 0; i < (int) array_size; i++) {
         char *next_element = strings_array[i];
-        location = i - 1;
-        while (location >= 0 && comparator(strings_array[location], next_element)) {
-            strings_array[location + 1] = strings_array[location];
-            location--;
+        place = i - 1;
+        while (place >= 0 && comparator(strings_array[place], next_element)) {
+            strings_array[place + 1] = strings_array[place];
+            place--;
         }
-        strings_array[location + 1] = next_element;
+        strings_array[place + 1] = next_element;
     }
 }
 
@@ -40,7 +40,6 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
             if (right > array_size) {
                 right = array_size;
             }
-
             array_size_t i = left, j = middle;
             while (i < middle && j < right) {
                 if (comparator(strings_array[j], strings_array[i])) {
@@ -49,25 +48,21 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
                     new_array[index++] = strings_array[j++];
                 }
             }
-
             while (i < middle) {
                 new_array[index++] = strings_array[i++];
             }
             while (j < right) {
                 new_array[index++] = strings_array[j++];
             }
-
             left += step * 2;
             middle += step * 2;
             right += step * 2;
         } while (left < array_size);
-
         for (array_size_t i = 0; i < array_size; i++) {
             strings_array[i] = new_array[i];
         }
         step *= 2;
     }
-
     free(new_array);
 }
 

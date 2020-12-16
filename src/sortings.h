@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-#define  STRING_SIZE 1000
+#define STRING_SIZE 1000
 
 typedef int (*comparator_func_t)(const char *, const char *);
 

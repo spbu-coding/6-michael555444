@@ -61,29 +61,23 @@ int is_string_in_array(string_t string, const_string_array_t string_array, array
 
 int checks(parameters_count_t parameters_count, parameters_t parameters) {
     if (!check_count_of_parameters(parameters_count)) {
-        return error("Input correct count of parameters.");
+        return error("Incorrect parameters counts");
     }
-
     if (!is_integer(parameters[COUNT_OF_STRINGS])) {
-        return error("Input correct data type of strings count.");
+        return error("Incorrect type of strings");
     }
-
     if (!check_existence_input_file(parameters[INPUT_FNAME])) {
-        return error("Input correct input file name.");
+        return error("Incorrect input file name");
     }
-
     int count_of_strings = string_to_int(parameters[COUNT_OF_STRINGS]);
     if (!check_count_of_strings(parameters[INPUT_FNAME], count_of_strings)) {
-        return error("Input correct count of strings.");
+        return error("Incorrect count of strings");
     }
-
     if (is_string_in_array(parameters[SORT_NAME], SORTINGS, SORTINGS_COUNT) == UNSUCCESS) {
-        return error("Input correct sorting name.");
+        return error("Incorrect incoming sorting name");
     }
-
     if (is_string_in_array(parameters[COMPARATOR_NAME], COMPARERS, COMPARERS_COUNT) == UNSUCCESS) {
-        return error("Input correct comparator name.");
+        return error("Incorrect comparator name");
     }
-
     return SUCCESS;
 }
