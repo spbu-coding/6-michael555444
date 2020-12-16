@@ -4,6 +4,8 @@
 
 #define STRING_SIZE 1000
 
+static const char END_OF_STRING = '\0';
+
 typedef int (*comparator_func_t)(const char *, const char *);
 
 typedef char **strings_array_t;
