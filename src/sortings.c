@@ -66,31 +66,33 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
     free(new_array);
 }
 
-void quick(strings_array_t strings_array, int left, int right, comparator_func_t comparator) {
-    int i = left = 0;
-    int j = right = array_size_t - 1;
-    char *middle = strings_array[(left + right) / 2];
-    do {
-        while (comparator(middle, strings_array[i]) && (i < right)) {
-            i++;
-        }
-        while (comparator(strings_array[j], middle) && (j > left)) {
-            j--;
-        }
-        if (i <= j) {
-            char *swapper = strings_array[i];
-            strings_array[i] = strings_array[j];
-            strings_array[j] = swapper;
-            i++;
-            j--;
-        }
-    } while (i <= j);
+void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator) {
+    void sorting(strings_array, 0, (int) array_size - 1, comparator) {
+        int i = left = 0;
+        int j = right = array_size_t - 1;
+        char *middle = strings_array[(left + right) / 2];
+        do {
+            while (comparator(middle, strings_array[i]) && (i < right)) {
+                i++;
+            }
+            while (comparator(strings_array[j], middle) && (j > left)) {
+                j--;
+            }
+            if (i <= j) {
+                char *swapper = strings_array[i];
+                strings_array[i] = strings_array[j];
+                strings_array[j] = swapper;
+                i++;
+                j--;
+            }
+        } while (i <= j);
 
-    if (left < j) {
-        quick(strings_array, left, j, comparator);
-    }
-    if (i < right) {
-        quick(strings_array, i, right, comparator);
+        if (left < j) {
+            quick(strings_array, left, j, comparator);
+        }
+        if (i < right) {
+            quick(strings_array, i, right, comparator);
+        }
     }
 }
 
