@@ -26,9 +26,9 @@ bool check_existence_input_file(fname_t file_name) {
 bool check_count_of_strings(fname_t file_name, count_of_strings_t count_of_strings) {
     FILE *input_file = fopen(file_name, "r");
     array_size_t count_of_input_strings = 0;
-    char *input_string = malloc(sizeof(char) * STRING_SIZE);
+    char *input_string = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
     while (!feof(input_file)) {
-        if (fgets(input_string, STRING_SIZE, input_file) != NULL) {
+        if (fgets(input_string, MAX_INPUT_STRING_SIZE, input_file) != NULL) {
             count_of_input_strings++;
         }
     }

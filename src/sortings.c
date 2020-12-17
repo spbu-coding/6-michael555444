@@ -1,5 +1,4 @@
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "sortings.h"
@@ -66,74 +65,146 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
     free(new_array);
 }
 
-void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator) {
-    void sorting(strings_array, int 0 int left, (int) array_size - 1 int right, comparator) {
-        int i = left = 0;
-        int j = right = array_size_t - 1;
-        char *middle = strings_array[(left + right) / 2];
-        do {
-            while (comparator(middle, strings_array[i]) && (i < right)) {
-                i++;
-            }
-            while (comparator(strings_array[j], middle) && (j > left)) {
-                j--;
-            }
-            if (i <= j) {
-                char *swapper = strings_array[i];
-                strings_array[i] = strings_array[j];
-                strings_array[j] = swapper;
-                i++;
-                j--;
-            }
-        } while (i <= j);
+void sorting(strings_array_t strings_array, int left, int right, comparator_func_t comparator)
+{
+    int i = left, j = right;
+    char *middle = strings_array[(left + right) / 2];
 
-        if (left < j) {
-            quick(strings_array, left, j, comparator);
+    do
+    {
+        while(comparator(middle, strings_array[i]) && (i < right))
+        {
+            i++;
         }
-        if (i < right) {
-            quick(strings_array, i, right, comparator);
+        while(comparator(strings_array[j], middle) && (j > left))
+        {
+            j--;
         }
+        if(i <= j)
+        {
+            char* swapper = strings_array[i];
+            strings_array[i] = strings_array[j];
+            strings_array[j] = swapper;
+            i++;
+            j--;
+        }
+    } while(i <= j);
+
+    if(left < j)
+    {
+        sorting(strings_array, left, j, comparator);
+    }
+    if(i < right)
+    {
+        sorting(strings_array, i, right, comparator);
     }
 }
 
-void radix(strings_array_t array, array_size_t size, comparator_func_t compare_func) {
-    compare_func(array[0], array[0]);
-    size_t length[size], max_length = 0;
-    for (unsigned int i = 0; i < size; i++) {
-        length[i] = strlen(array[i]) - 1;
-        if (length[i] > max_length) {
-            max_length = length[i];
-        }
-    }
-    for (int i = (int) max_length - 1; i >= 0; i--) {
-        unsigned int char_counter[128] = {
-                0
-        };
-        for (unsigned int j = 0; j < size; j++) {
-            if ((int) length[j] - 1 >= i) {
-                char_counter[(unsigned int) array[j][i]]++;
-            } else {
-                char_counter[0]++;
-            }
-        }
-        for (unsigned int j = 1; j < 128; j++) {
-            char_counter[j] += char_counter[j - 1];
-        }
-        char *buffer[size];
-        size_t buffer_length[size];
-        for (int j = (int) size - 1; j >= 0; j--) {
-            if ((int) length[j] - 1 >= i) {
-                buffer[(char_counter[(unsigned int) array[j][i]]) - 1] = array[j];
-                buffer_length[(char_counter[(unsigned int) array[j][i]]--) - 1] = length[j];
-            } else {
-                buffer[(char_counter[0]) - 1] = array[j];
-                buffer_length[(char_counter[0]--) - 1] = length[j];
-            }
-        }
-        memcpy(array, buffer, size * sizeof(char *));
-        memcpy(length, buffer_length, size * sizeof(size_t));
-    }
+void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator)
+{
+    sorting(strings_array, 0, (int) array_size - 1, comparator);
 }
+
+void radix(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator)
+{
+    strings_array_t buffer = (strings_array_t)malloc(sizeof(char *) * array_size);
+    unsigned int *string_sizes = malloc(sizeof(unsigned int) * array_size), *string_sizes_buf = malloc(sizeof(unsigned int) * array_size);
+    unsigned int max_length = 0;
+
+    for (array_size_t i = 0; i < array_size; i++)
+    {
+        string_sizes[i] = strlen(strings_array[i]);
+
+        if (string_sizes[i] > max_length)
+            max_length = string_sizes[i];
+    }
+
+    for (unsigned int current_radix = max_length; current_radix > 0; current_radix--)
+    {
+        unsigned int buffer_next_element = 0;
+
+        for (array_size_t i = 0; i < array_size; i++)
+        {
+            if (string_sizes[i] < current_radix)
+            {
+                string_sizes_buf[buffer_next_element] = string_sizes[i];
+                buffer[buffer_next_element] = strings_array[i];
+                buffer_next_element++;
+            }
+        }
+
+        for (int current_char = 0; current_char <= 256; current_char++)
+            for (array_size_t i = 0; i < array_size; i++)
+            {
+                if (string_sizes[i] < current_radix)
+                    continue;
+
+                if (strings_array[i][current_radix - 1] == current_char)
+                {
+                    string_sizes_buf[buffer_next_element] = string_sizes[i];
+                    buffer[buffer_next_element] = strings_array[i];
+                    buffer_next_element++;
+                }
+            }
+
+        for (array_size_t i = 0; i < array_size; i++)
+            strings_array[i] = buffer[i];
+
+        for (array_size_t i = 0; i < array_size; i++)
+            string_sizes[i] = string_sizes_buf[i];
+    }
+
+    if (!comparator(strings_array[0], strings_array[1]))
+    {
+        for (array_size_t i = 0; i < array_size; i++)
+            strings_array[i] = buffer[array_size - i - 1];
+    }
+
+    free(buffer);
+    free(string_sizes);
+    free(string_sizes_buf);
+}
+
+
+
+//void radix(strings_array_t array, array_size_t size, comparator_func_t compare_func) {
+//    compare_func(array[0], array[0]);
+//    size_t length[size], max_length = 0;
+//    for (unsigned int i = 0; i < size; i++) {
+//        length[i] = strlen(array[i]) - 1;
+//        if (length[i] > max_length) {
+//            max_length = length[i];
+//        }
+//    }
+//    for (int i = (int) max_length - 1; i >= 0; i--) {
+//        unsigned int char_counter[128] = {
+//                0
+//        };
+//        for (unsigned int j = 0; j < size; j++) {
+//            if ((int) length[j] - 1 >= i) {
+//                char_counter[(unsigned int) array[j][i]]++;
+//            } else {
+//                char_counter[0]++;
+//            }
+//        }
+//        for (unsigned int j = 1; j < 128; j++) {
+//            char_counter[j] += char_counter[j - 1];
+//        }
+//        char *buffer[size];
+//        size_t buffer_length[size];
+//        for (int j = (int) size - 1; j >= 0; j--) {
+//            if ((int) length[j] - 1 >= i) {
+//                buffer[(char_counter[(unsigned int) array[j][i]]) - 1] = array[j];
+//                buffer_length[(char_counter[(unsigned int) array[j][i]]--) - 1] = length[j];
+//            } else {
+//                buffer[(char_counter[0]) - 1] = array[j];
+//                buffer_length[(char_counter[0]--) - 1] = length[j];
+//            }
+//        }
+//        memcpy(array, buffer, size * sizeof(char *));
+//        memcpy(length, buffer_length, size * sizeof(size_t));
+//    }
+//}
 
 int ascending(const char *first_string, const char *second_string) {
     char first_string_char, second_string_char;

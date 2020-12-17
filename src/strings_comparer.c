@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     int count_of_strings = string_to_int(argv[COUNT_OF_STRINGS]);
     char **strings_array = malloc(sizeof(char *) * count_of_strings);
     for (int i = 0; i < count_of_strings; i++) {
-        strings_array[i] = malloc(sizeof(char) * STRING_SIZE);
+        strings_array[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
     }
     input_block(argv[INPUT_FNAME], count_of_strings, strings_array);
     int comparator_num = is_string_in_array(argv[COMPARATOR_NAME], COMPARERS, COMPARERS_COUNT);

@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-#define STRING_SIZE 1000
+#define MAX_INPUT_STRING_SIZE 1000
 
 static const char END_OF_STRING = '\0';
 

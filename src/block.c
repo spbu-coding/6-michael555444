@@ -5,7 +5,7 @@ static char *END_OF_FILE = "\n";
 void input_block(fname_t file_name, array_size_t array_size, strings_array_t strings_array) {
     FILE *input_file = fopen(file_name, "r");
     for (array_size_t i = 0; i < array_size; i++) {
-        fgets(strings_array[i], STRING_SIZE, input_file);
+        fgets(strings_array[i], MAX_INPUT_STRING_SIZE, input_file);
     }
     fclose(input_file);
 }
