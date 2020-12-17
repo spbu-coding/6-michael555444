@@ -161,47 +161,6 @@ void radix(strings_array_t strings_array, array_size_t array_size, comparator_fu
 }
 
 
-
-
-//void radix(strings_array_t array, array_size_t size, comparator_func_t compare_func) {
-//    compare_func(array[0], array[0]);
-//    size_t length[size], max_length = 0;
-//    for (unsigned int i = 0; i < size; i++) {
-//        length[i] = strlen(array[i]) - 1;
-//        if (length[i] > max_length) {
-//            max_length = length[i];
-//        }
-//    }
-//    for (int i = (int) max_length - 1; i >= 0; i--) {
-//        unsigned int char_counter[128] = {
-//                0
-//        };
-//        for (unsigned int j = 0; j < size; j++) {
-//            if ((int) length[j] - 1 >= i) {
-//                char_counter[(unsigned int) array[j][i]]++;
-//            } else {
-//                char_counter[0]++;
-//            }
-//        }
-//        for (unsigned int j = 1; j < 128; j++) {
-//            char_counter[j] += char_counter[j - 1];
-//        }
-//        char *buffer[size];
-//        size_t buffer_length[size];
-//        for (int j = (int) size - 1; j >= 0; j--) {
-//            if ((int) length[j] - 1 >= i) {
-//                buffer[(char_counter[(unsigned int) array[j][i]]) - 1] = array[j];
-//                buffer_length[(char_counter[(unsigned int) array[j][i]]--) - 1] = length[j];
-//            } else {
-//                buffer[(char_counter[0]) - 1] = array[j];
-//                buffer_length[(char_counter[0]--) - 1] = length[j];
-//            }
-//        }
-//        memcpy(array, buffer, size * sizeof(char *));
-//        memcpy(length, buffer_length, size * sizeof(size_t));
-//    }
-//}
-
 int ascending(const char *first_string, const char *second_string) {
     char first_string_char, second_string_char;
     do {
