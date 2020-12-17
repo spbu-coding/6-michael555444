@@ -74,7 +74,7 @@ int checks(parameters_count_t parameters_count, parameters_t parameters) {
         return error("Incorrect count of strings");
     }
     if (is_string_in_array(parameters[SORT_NAME], SORTINGS, SORTINGS_COUNT) == UNSUCCESS) {
-        return error("Incorrect incoming sorting name");
+        return error("Incorrect incoming quick_sorting name");
     }
     if (is_string_in_array(parameters[COMPARATOR_NAME], COMPARERS, COMPARERS_COUNT) == UNSUCCESS) {
         return error("Incorrect comparator name");

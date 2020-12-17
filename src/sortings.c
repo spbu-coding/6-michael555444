@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "sortings.h"
 
@@ -65,105 +66,100 @@ void merge(strings_array_t strings_array, array_size_t array_size, comparator_fu
     free(new_array);
 }
 
-void sorting(strings_array_t strings_array, int left, int right, comparator_func_t comparator)
-{
+void quick_sorting(strings_array_t strings_array, int left, int right, comparator_func_t comparator) {
     int i = left, j = right;
     char *middle = strings_array[(left + right) / 2];
 
-    do
-    {
-        while(comparator(middle, strings_array[i]) && (i < right))
-        {
+    do {
+        while (comparator(middle, strings_array[i]) && (i < right)) {
             i++;
         }
-        while(comparator(strings_array[j], middle) && (j > left))
-        {
+        while (comparator(strings_array[j], middle) && (j > left)) {
             j--;
         }
-        if(i <= j)
-        {
-            char* swapper = strings_array[i];
+        if (i <= j) {
+            char *swapper = strings_array[i];
             strings_array[i] = strings_array[j];
             strings_array[j] = swapper;
             i++;
             j--;
         }
-    } while(i <= j);
+    } while (i <= j);
 
-    if(left < j)
-    {
-        sorting(strings_array, left, j, comparator);
+    if (left < j) {
+        quick_sorting(strings_array, left, j, comparator);
     }
-    if(i < right)
-    {
-        sorting(strings_array, i, right, comparator);
+    if (i < right) {
+        quick_sorting(strings_array, i, right, comparator);
     }
 }
 
-void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator)
-{
-    sorting(strings_array, 0, (int) array_size - 1, comparator);
+void quick(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator) {
+    quick_sorting(strings_array, 0, (int) array_size - 1, comparator);
 }
 
-void radix(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator)
-{
-    strings_array_t buffer = (strings_array_t)malloc(sizeof(char *) * array_size);
-    unsigned int *string_sizes = malloc(sizeof(unsigned int) * array_size), *string_sizes_buf = malloc(sizeof(unsigned int) * array_size);
-    unsigned int max_length = 0;
+void swapper(strings_array_t first_array, strings_array_t second_array) {
+    char *swapper = *first_array;
+    *first_array = *second_array;
+    *second_array = swapper;
+}
 
-    for (array_size_t i = 0; i < array_size; i++)
-    {
-        string_sizes[i] = strlen(strings_array[i]);
-
-        if (string_sizes[i] > max_length)
-            max_length = string_sizes[i];
-    }
-
-    for (unsigned int current_radix = max_length; current_radix > 0; current_radix--)
-    {
-        unsigned int buffer_next_element = 0;
-
-        for (array_size_t i = 0; i < array_size; i++)
-        {
-            if (string_sizes[i] < current_radix)
-            {
-                string_sizes_buf[buffer_next_element] = string_sizes[i];
-                buffer[buffer_next_element] = strings_array[i];
-                buffer_next_element++;
-            }
+void radix_sorting(strings_array_t strings_array, array_size_t array_size, int position) {
+    array_size_t count[UCHAR_MAX + 1], mode, i;
+    strings_array_t bucket[UCHAR_MAX + 1], top[UCHAR_MAX + 1];
+    while (array_size > 1) {
+        memset(count, 0, sizeof(array_size_t) * (UCHAR_MAX + 1));
+        for (i = 0; i < array_size; i++) {
+            count[(int) strings_array[i][position]]++;
         }
 
-        for (int current_char = 0; current_char <= 256; current_char++)
-            for (array_size_t i = 0; i < array_size; i++)
-            {
-                if (string_sizes[i] < current_radix)
-                    continue;
-
-                if (strings_array[i][current_radix - 1] == current_char)
-                {
-                    string_sizes_buf[buffer_next_element] = string_sizes[i];
-                    buffer[buffer_next_element] = strings_array[i];
-                    buffer_next_element++;
-                }
+        mode = 1;
+        for (i = 2; i <= UCHAR_MAX; i++)
+            if (count[i] > count[mode]) {
+                mode = i;
             }
 
-        for (array_size_t i = 0; i < array_size; i++)
-            strings_array[i] = buffer[i];
+        if (count[mode] < array_size) {
+            bucket[0] = strings_array;
+            top[0] = strings_array;
+            for (i = 1; i <= UCHAR_MAX; i++) {
+                top[i] = bucket[i] = bucket[i - 1] + count[i - 1];
+            }
 
-        for (array_size_t i = 0; i < array_size; i++)
-            string_sizes[i] = string_sizes_buf[i];
+            for (i = 0; i <= UCHAR_MAX; i++) {
+                while (top[i] < bucket[i] + count[i])
+                    if ((array_size_t) top[i][0][position] == i) {
+                        top[i]++;
+                    } else {
+                        swapper(top[i], top[(int) top[i][0][position]]++);
+                    }
+            }
+
+            for (i = 1; i <= UCHAR_MAX; i++)
+                if (i != mode) {
+                    radix_sorting(bucket[i], count[i], position + 1);
+                }
+
+            array_size = count[mode];
+            strings_array = bucket[mode];
+            position++;
+        } else {
+            position++;
+        }
     }
-
-    if (!comparator(strings_array[0], strings_array[1]))
-    {
-        for (array_size_t i = 0; i < array_size; i++)
-            strings_array[i] = buffer[array_size - i - 1];
-    }
-
-    free(buffer);
-    free(string_sizes);
-    free(string_sizes_buf);
 }
+
+void radix(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator) {
+    radix_sorting(strings_array, array_size, 0);
+    if (comparator == descending) {
+        for (array_size_t i = 0; i < array_size / 2; i++) {
+            char *swapper = strings_array[i];
+            strings_array[i] = strings_array[array_size - i - 1];
+            strings_array[array_size - i - 1] = swapper;
+        }
+    }
+}
+
 
 
 
